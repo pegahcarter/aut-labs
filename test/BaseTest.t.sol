@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 
 import { VoterFactory } from "src/VoterFactory.sol";
 import { Voter } from "src/Voter.sol";
-import { MockDAOExpander } from "test/mocks/MockDAOExpander.sol";
+import { MockNova } from "test/mocks/MockNova.sol";
 import { MockVoteCalculator } from "test/mocks/MockVoteCalculator.sol";
 
 contract BaseTest is Test {
@@ -15,19 +15,19 @@ contract BaseTest is Test {
 
     VoterFactory public iVoterFactory;
     Voter public iVoter;
-    MockDAOExpander public iDaoExpander;
+    MockNova public iNova;
     MockVoteCalculator public iVoteCalculator;
 
     function setUp() public {
         iVoterFactory = new VoterFactory();
-        iDaoExpander = new MockDAOExpander();
+        iNova = new MockNova();
         iVoteCalculator = new MockVoteCalculator();
 
         // approve tester to daoExpander
-        iDaoExpander.addMember(tester);
+        iNova.addMember(tester);
 
         // create an initial instance of the Voter
         vm.prank(tester);
-        iVoter = Voter(iVoterFactory.createVoter(address(iDaoExpander), address(iVoteCalculator)));
+        iVoter = Voter(iVoterFactory.createVoter(address(iNova), address(iVoteCalculator)));
     }
 }

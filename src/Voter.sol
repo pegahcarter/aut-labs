@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.19;
 
-import { IDAOExpander} from "@aut-labs/contracts/expander/interfaces/IDAOExpander.sol";
+import { INova } from "@aut-labs/contracts/nova/INova.sol";
 import { IVoteCalculator } from "src/interfaces/IVoteCalculator.sol";
 
 /// TODO: natspec
 contract Voter {
 
-    IDAOExpander public immutable iDaoExpander;
+    INova public immutable iNova;
     IVoteCalculator public immutable iVoteCalculator;
     uint256 public proposalId;
 
@@ -22,8 +22,8 @@ contract Voter {
 
     mapping(address member => mapping(uint256 _proposalId => bool voted)) public hasVoted;
 
-    constructor(address _daoExpander, address _voteCalculator) {
-        iDaoExpander = IDAOExpander(_daoExpander);
+    constructor(address _nova, address _voteCalculator) {
+        iNova = INova(_nova);
         iVoteCalculator = IVoteCalculator(_voteCalculator);
     }
 
@@ -33,7 +33,7 @@ contract Voter {
         string calldata _metadata
     ) external returns (uint256 _proposalId) {
         // Revert if the sender is not a member of the dao
-        if (!iDaoExpander.isMemberOfOriginalDAO(msg.sender)) revert NotDaoMember();
+        if (!iNova.isMember(msg.sender)) revert NotDaoMember();
 
         /// @dev may cause issues for proposals with short time windows
         if (_startTime < block.timestamp) revert InvalidStartTime();

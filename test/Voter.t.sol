@@ -13,9 +13,9 @@ contract VoterTest is BaseTest {
             err: "Voter proposal ID should equal 0"
         });
         assertEq({
-            a: address(iDaoExpander),
-            b: address(iVoter.iDaoExpander()),
-            err: "Voter iDaoExpander incorrectly set"
+            a: address(iNova),
+            b: address(iVoter.iNova()),
+            err: "Voter iNova incorrectly set"
         });
 
         Voter.Proposal memory proposal = iVoter.getProposal(1);
@@ -114,7 +114,7 @@ contract VoterTest is BaseTest {
     }
 
     function test_Propose_NotDaoMember_reverts() public {
-        assertTrue(!iDaoExpander.isMemberOfOriginalDAO(tester2));
+        assertTrue(!iNova.isMember(tester2));
 
         vm.expectRevert(Voter.NotDaoMember.selector);
         vm.prank(tester2);
@@ -144,8 +144,8 @@ contract VoterTest is BaseTest {
 
     function test_Vote_succeeds() public {
         /// @dev setup: add other testers to dao
-        iDaoExpander.addMember(tester2);
-        iDaoExpander.addMember(tester3);
+        iNova.addMember(tester2);
+        iNova.addMember(tester3);
 
         /// @dev setup: give testers voting weights
         uint256 weight1 = 10;
