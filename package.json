@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@aut-labs/contracts": "github:aut-labs/contracts#dev-main"
+  }
+}
